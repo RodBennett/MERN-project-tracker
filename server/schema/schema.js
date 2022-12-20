@@ -115,19 +115,20 @@ const mutation = new GraphQLObjectType({
         deleteClient: {
             type: ClientType,
             args: {
-                id: {type: GraphQLNonNull(GraphQLID)}
+                id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve(parent, args) {
                 return Client.findByIdAndRemove(args.id);
             }
         },
-        // Add a project numtation
+        // Add a project mutation ***** NOTE, when testing enum values in graphiql, use the key names (new, progress, completed) WITHOUT QUOTATION MARKS, ie: ( status: new )
         addProject: {
             type: ProjectType,
             args: {
                 name: { type: GraphQLNonNull(GraphQLString) },
                 description: { type: GraphQLNonNull(GraphQLString) },
-                status: { 
+                // setting up enum query types 
+                status: {
                     type: new GraphQLEnumType({
                         name: "ProjectStatus",
                         values: {
@@ -153,13 +154,46 @@ const mutation = new GraphQLObjectType({
         // Delete a project mutation
         deleteProject: {
             type: ProjectType,
-            args: { 
-                id: { type: GraphQLNonNull(GraphQLID) } 
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve(parent, args) {
-                return Project.findByIdAndRemove(args.id);
+                return Project.findByIdAndRemove(args.id); // mongoose method
             }
         },
+        // Update / Edit a project
+        updateProject: {
+            type: ProjectType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
+                // NOTE: GraphQLNonNull is not being used here because we want to remain flexible with what fields to update during edits
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                status: {
+                    type: new GraphQLEnumType({
+                        name: "ProjectStatusUpdate",
+                        values: {
+                            "new": { value: "Not started" },
+                            "progress": { value: "In progress" },
+                            "completed": { value: "Completed" },
+                        }
+                    }),
+                },
+            },
+            resolve(parent, args) {
+                return Project.findByIdAndUpdate( // mongoose method
+                args.id,
+                    {
+                        $set: {
+                            name: args.name,
+                            description: args.description,
+                            status: args.status
+                        },
+                    },
+                    { new: true }
+                );
+            },
+        }
     },
 });
 
