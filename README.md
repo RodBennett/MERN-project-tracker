@@ -1,7 +1,7 @@
 # ⌅ MERN Stack Project Manager
 
 ## Overview
-This MERN stack practice app uses a Graphql database for companies to stay on track with various projects.  It was created alongside Traversy Media's YouTube video which can be viewed here: https://www.youtube.com/watch?v=BcLNfwF04Kw&t=2516s
+This MERN stack practice app uses a Graphql API for companies to stay on track with various projects.  It was created alongside Traversy Media's YouTube video which can be viewed here: https://www.youtube.com/watch?v=BcLNfwF04Kw&t=2516s
 
 ## Technologies Used
 
