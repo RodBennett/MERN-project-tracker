@@ -7,7 +7,7 @@
 const Project = require("../models/Project");
 const Client = require("../models/Client")
 
-// bring in GraphQLObjectType, ID, String, List from graphql package
+// bring in GraphQLObjectType, ID, String, List from graphql package for different types of fields
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -19,8 +19,8 @@ const {
 } = require("graphql");
 
 // Define project type along fields in sampleData.js
-const ProjectType = new GraphQLObjectType({
-    name: "Project",
+const ProjectType = new GraphQLObjectType({ // GraphQLObjectType defines our object types
+    name: "Project", // this refers to Project.js model
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
@@ -36,7 +36,7 @@ const ProjectType = new GraphQLObjectType({
 });
 // Define client type along fields in sampleData.js
 const ClientType = new GraphQLObjectType({
-    name: "Client",
+    name: "Client", // refers to Client.js model
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
@@ -54,7 +54,7 @@ const RootQuery = new GraphQLObjectType({
             type: new GraphQLList(ProjectType),
             resolve(parent, args) {
                 // return projects; ========= only used with sampleData.js
-                return Project.find(); // this method returns all clients from mongodb
+                return Project.find(); // this mongoose method returns all clients from mongodb
             }
         },
         // project (singular) is query for one client, needs id args
@@ -63,7 +63,7 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
                 // return projects.find(project => project.id === args.id) ======= used with sampleData.js
-                return Project.findById(args.id)
+                return Project.findById(args.id) // mongoose method
 
             }
         },
@@ -166,7 +166,7 @@ const mutation = new GraphQLObjectType({
             type: ProjectType,
             args: {
                 id: { type: GraphQLNonNull(GraphQLID) },
-                // NOTE: GraphQLNonNull is not being used here because we want to remain flexible with what fields to update during edits
+                // NOTE: GraphQLNonNull is not being used on next 3 fileds because we want to remain flexible with what fields to update during edits
                 name: { type: GraphQLString },
                 description: { type: GraphQLString },
                 status: {

@@ -1,6 +1,7 @@
 // import express.js
 const express = require("express");
 const colors = require("colors");
+const cors = require("cors");
 // import dotenv to create .env variables
 require("dotenv").config();
 // import express-graphql to use graphiql during development
@@ -18,6 +19,8 @@ const app = express();
 
 // Call mongodb via connectDB from db.js:
 connectDB();
+// middleware for cors
+app.use(cors());
 
 app.use("/graphql", graphqlHTTP({
             schema,
