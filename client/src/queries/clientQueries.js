@@ -8,6 +8,7 @@ const GET_CLIENTS = gql`
             email
             phone
         }
-    }`
+    }
+`;
 
 export { GET_CLIENTS }

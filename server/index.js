@@ -15,17 +15,15 @@ const connectDB = require("./config/db")
 
 const app = express();
 
-// define url endpoint to test queries in graphiql tool during development @ http://localhost:5001/graphql.  "schema" where types and have been defined has been imported on line 4. And as long as we're in 'npm run dev' mode, graphiql will open on url
-
 // Call mongodb via connectDB from db.js:
 connectDB();
-// middleware for cors
+// call middleware for cors
 app.use(cors());
-
+// define url endpoint to test queries in graphiql tool during development @ http://localhost:5001/graphql.  "schema" where types and have been defined has been imported on line 4. And as long as we're in 'npm run dev' mode, graphiql will open on url
 app.use("/graphql", graphqlHTTP({
-            schema,
-            graphiql: process.env.NODE_ENV === "development",
-        }))
+    schema,
+    graphiql: process.env.NODE_ENV === "development",
+}))
 
 app.listen(port, console.log(`Server running on port ${port}!`))
 
