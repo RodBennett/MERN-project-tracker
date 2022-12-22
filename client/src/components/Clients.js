@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
-import ClientRow from "./ClientRow"
 import { GET_CLIENTS } from "../queries/clientQueries";
+
+import ClientRow from "./ClientRow"
 import Spinner from "./Spinner"
 
 export default function Clients() {
@@ -25,9 +26,10 @@ export default function Clients() {
             <tbody>
                 {/* clients on the next line comes from imported GET_CLEINTS query */}
                 {data.clients.map(client => (
-                    <ClientRow key ={client.id} client={client} />
+                    <ClientRow key={client.id} client={client} />
                 ))}
             </tbody>
         </table>
-    )}</>;
+    )}
+    </>;
 }

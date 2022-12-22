@@ -5,27 +5,28 @@ import { useMutation } from "@apollo/client"
 import { DELETE_CLIENT } from "../mutations/clientMutations"
 import { GET_CLIENTS } from "../queries/clientQueries"
 
-export default function ClientRow( { client } ) {
+export default function ClientRow({ client }) {
     const [deleteClient] = useMutation(DELETE_CLIENT, {
         variables: { id: client.id },
         // method 1 on how to update page immediately upon delete: use refetchQueries
         // refetchQueries: [ {query: GET_CLIENTS} ]
-        
-        // method 2 on how to update page immediately upon delete
+
+        // method 2 on how to update page immediately upon delete. 
+        // *** readQuery/writeQuery are Apollo client methods
         update(cache, { data: { deleteClient } }) {
-            const { clients } = cache.readQuery({ query: 
-                GET_CLIENTS });
+            const { clients } = cache.readQuery({ query: GET_CLIENTS });
             cache.writeQuery({
                 query: GET_CLIENTS,
-                data: { clients: clients.filter(client => client.id !== deleteClient.id),
-                 }
+                data: {
+                    clients: clients.filter(client => client.id !== deleteClient.id),
+                }
             });
-        },     
+        },
     });
 
 
-  return (
-        <tr> 
+    return (
+        <tr>
             {/* <td> = 'table data cell */}
             <td>{client.name}</td>
             <td>{client.email}</td>
@@ -36,5 +37,5 @@ export default function ClientRow( { client } ) {
                 </button>
             </td>
         </tr>
-  )
+    )
 }
